@@ -1,0 +1,50 @@
+server:
+  port: 9001
+  servlet:
+    context-path: /find-any
+
+
+spring:
+  application:
+    name: AUTH-SERVICE
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/user-secrets
+    username: postgres
+    password:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id:
+            client-secret:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+  instance:
+    hostname: localhost
+
+findany:
+  jwt:
+    secret:

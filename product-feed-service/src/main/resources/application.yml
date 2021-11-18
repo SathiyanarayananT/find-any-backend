@@ -1,0 +1,45 @@
+server:
+  port: 9004
+  servlet:
+    context-path: /find-any
+
+spring:
+  application:
+    name: PRODUCT-FEED-SERVICE
+  json.trusted.packages: com.myapp
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/product-feed
+    username: postgres
+    password:
+kafka:
+  consumer:
+    bootstrap-servers: localhost:9092
+    group-id: product-feed-group
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+#      properties:
+#              spring.json.trusted.packages: '*'
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+  instance:
+    hostname: localhost
+
+
+findany:
+  jwt:
+    secret:
+  service:
+    username:
+    password:

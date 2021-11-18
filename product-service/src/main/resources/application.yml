@@ -1,0 +1,44 @@
+server:
+  port: 9003
+  servlet:
+    context-path: /find-any
+
+spring:
+  application:
+    name: PRODUCT-SERVICE
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/products
+    username: postgres
+    password:
+kafka:
+  producer:
+    bootstrap-servers: localhost:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      properties:
+#        spring.json.add.type.headers: false
+  servlet:
+      multipart:
+        max-file-size: 10MB
+        max-request-size: 10MB
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+  instance:
+    hostname: localhost
+
+
+findany:
+  jwt:
+    secret:

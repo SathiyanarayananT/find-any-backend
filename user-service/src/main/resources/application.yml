@@ -1,0 +1,32 @@
+server:
+  port: 9002
+  servlet:
+    context-path: /find-any
+
+spring:
+  application:
+    name: USER-SERVICE
+  jpa:
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/users
+    username: postgres
+    password:
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:9000/eureka/
+  instance:
+    hostname: localhost
+
+findany:
+  jwt:
+    secret:
