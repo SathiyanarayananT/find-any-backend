@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.findany.productservice.entity.Product;
 import com.findany.productservice.model.ProductDto;
 import com.findany.productservice.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +22,15 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    private Logger log = LoggerFactory.getLogger(ProductController.class);
+
     private ObjectMapper mapper = new ObjectMapper();
 
     @GetMapping("/{productId}")
     public Product getProduct(@PathVariable int productId) {
         Optional<Product> productOptional = productService.getProduct(productId);
         if (!productOptional.isPresent()) {
+            log.error("Error occurred: Product not found for product id {}", productId);
             throw new RuntimeException("Product not found");
         }
         return productOptional.get();

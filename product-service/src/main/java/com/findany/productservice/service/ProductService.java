@@ -6,6 +6,8 @@ import com.findany.productservice.model.ProductDto;
 import com.findany.productservice.model.ProductFeed;
 import com.findany.productservice.model.UserDetails;
 import com.findany.productservice.repository.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -19,12 +21,11 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
+    private final Logger log = LoggerFactory.getLogger(ProductService.class);
     @Autowired
     private UserDetails userDetails;
-
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private KafkaTemplate<String, ProductFeed> kafkaTemplate;
 
@@ -44,12 +45,14 @@ public class ProductService {
         product = productRepository.save(product);
         ProductFeed productFeed = new ProductFeed(product.getId(), product.getCity(), product.getCreatedAt());
         kafkaTemplate.send(AppConstants.TOPIC_NAME, productFeed);
+        log.info("New product added successfully with product id {}", product.getId());
         return product;
     }
 
     public Product updateProduct(ProductDto productDto) {
         Optional<Product> productOptional = getProduct(productDto.getId());
         if (!productOptional.isPresent()) {
+            log.error("Error occurred: Update failed due to product not found for product id {}", productDto.getId());
             throw new RuntimeException("Product not found");
         }
         Product product = productOptional.get();
@@ -63,6 +66,7 @@ public class ProductService {
         product = productRepository.save(product);
         ProductFeed productFeed = new ProductFeed(product.getId(), product.getCity(), product.getLastModifiedAt());
         kafkaTemplate.send(AppConstants.TOPIC_NAME, productFeed);
+        log.info("Update for the product id {} was successful", product.getId());
         return product;
     }
 
